@@ -1,0 +1,1357 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSwap | Learn, Share, Grow</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        :root {
+            --primary: #093251;
+            --secondary: #e7e6f0;
+            --bg: #a9d3de;
+            --card: #f2f5f5;
+            --text: #0a0c0b;
+            --muted: #02026c61;
+            --border: #e8e8f0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            transition: background .2s, color .2s;
+        }
+
+        body.dark {
+            --bg: #090a13;
+            --card: #25263b;
+            --text: #f6f6ff;
+            --muted: #b6b6ca;
+            --border: #414258;
+            --secondary: #35304f;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        header {
+            height: 72px;
+            background: var(--card);
+            display: flex;
+            align-items: center;
+            gap: 17px;
+            padding: 0 25px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 4;
+        }
+
+        .menu-btn {
+            border: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 28px;
+        }
+
+        .brand {
+            color: var(--primary);
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .header-right {
+            margin-left: auto;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 72px);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--card);
+            border-right: 1px solid var(--border);
+            padding: 20px 12px;
+            flex-shrink: 0;
+            transition: margin-left .25s;
+        }
+
+        .sidebar.closed {
+            margin-left: -250px;
+        }
+
+        .sidebar-title {
+            font-size: 12px;
+            color: var(--muted);
+            padding: 10px 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-btn {
+            display: block;
+            width: 100%;
+            padding: 13px 12px;
+            margin: 3px 0;
+            border: none;
+            border-radius: 9px;
+            text-align: left;
+            background: transparent;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .nav-btn:hover,
+        .nav-btn.active {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+
+        main {
+            flex: 1;
+            min-width: 0;
+            max-width: 1250px;
+            margin: auto;
+            padding: 28px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .hero {
+            background: linear-gradient(125deg, #5546cf, #9c82f2);
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            margin-bottom: 26px;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            margin-bottom: 13px;
+        }
+
+        .hero p {
+            line-height: 1.7;
+            max-width: 650px;
+        }
+
+        .hero button {
+            margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 23px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+            gap: 17px;
+            margin: 20px 0 30px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 21px;
+            border-radius: 15px;
+            min-width: 0;
+        }
+
+        .card h3 {
+            margin: 9px 0;
+            font-size: 17px;
+        }
+
+        .card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .big-icon {
+            font-size: 29px;
+        }
+
+        .stat {
+            font-size: 29px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-top: 13px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 11px 16px;
+            margin-top: 12px;
+        }
+
+        .btn:hover {
+            opacity: .88;
+        }
+
+        .btn-light {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+
+        .btn-danger {
+            background: #d94b65;
+            color: white;
+        }
+
+        .full-btn {
+            width: 100%;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 13px;
+        }
+
+        .avatar {
+            height: 49px;
+            width: 49px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 24px;
+            background: var(--secondary);
+        }
+
+        .profile h3 {
+            margin: 0 0 5px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--secondary);
+            color: var(--primary);
+            border-radius: 20px;
+            padding: 5px 9px;
+            font-size: 11px;
+            margin: 5px 4px 0 0;
+        }
+
+        form {
+            display: grid;
+            gap: 14px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+        select,
+        textarea {
+            width: 100%;
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            outline-color: var(--primary);
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+        }
+
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 17px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .setting-row h3 {
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .setting-row p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .setting-row input,
+        .setting-row button {
+            flex-shrink: 0;
+        }
+
+        .stars {
+            display: flex;
+            gap: 8px;
+            margin: 18px 0;
+        }
+
+        .star {
+            border: none;
+            background: transparent;
+            color: #c9c9d3;
+            font-size: 38px;
+            padding: 0;
+        }
+
+        .star.selected {
+            color: #ffb62e;
+        }
+
+        .notice {
+            background: var(--secondary);
+            color: var(--text);
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .progress {
+            height: 9px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+
+        .progress div {
+            height: 100%;
+            background: var(--primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 13px 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: var(--muted);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        .small {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .empty {
+            padding: 25px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+            padding: 25px 0 5px;
+        }
+
+        @media (max-width: 760px) {
+            header {
+                padding: 0 15px;
+            }
+
+            .header-right {
+                display: none;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 72px;
+                bottom: 0;
+                left: 0;
+                z-index: 3;
+                overflow-y: auto;
+                box-shadow: 3px 0 15px #0001;
+            }
+
+            .sidebar.closed {
+                margin-left: -260px;
+            }
+
+            main {
+                padding: 18px 13px;
+            }
+
+            .hero {
+                padding: 25px 20px;
+            }
+
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .setting-row {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <button class="menu-btn" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
+        <div class="brand">SkillSwap ✨</div>
+        <div class="header-right">Learn. Share. Grow Together.</div>
+    </header>
+
+    <div class="layout">
+
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-title">Main menu</div>
+            <button class="nav-btn active" data-page="home">🏠 Home</button>
+            <button class="nav-btn" data-page="discover">🔎 Find Skill Partners</button>
+            <button class="nav-btn" data-page="profile">👤 Student Profile</button>
+            <button class="nav-btn" data-page="connected">🤝 Connected People</button>
+            <button class="nav-btn" data-page="courses">📚 My Courses & Deadlines</button>
+
+            <div class="sidebar-title">My activity</div>
+            <button class="nav-btn" data-page="doubts">🙋 Doubt Sessions</button>
+            <button class="nav-btn" data-page="students">👩‍🎓 Student Attendance</button>
+            <button class="nav-btn" data-page="attendance">📋 My Attendance</button>
+            <button class="nav-btn" data-page="teaching">⏰ Teaching Schedule</button>
+
+            <div class="sidebar-title">More</div>
+            <button class="nav-btn" data-page="settings">⚙️ Settings</button>
+            <button class="nav-btn" data-page="rate">⭐ Rate Us</button>
+        </aside>
+
+        <main>
+
+            <!-- HOME -->
+            <section class="page active" id="home">
+                <div class="hero">
+                    <h1>Learn something new today! 👋</h1>
+                    <p>Share the skills you know. Discover the skills you want to learn. Find students who can help you
+                        grow.</p>
+                    <button class="btn" onclick="showPage('discover')">Find Your Skill Partner →</button>
+                </div>
+
+                <h2>Your Dashboard</h2>
+                <p class="subtitle">A quick look at your learning journey.</p>
+
+                <div class="grid">
+                    <div class="card">
+                        <div class="big-icon">🤝</div>
+                        <p>Connected People</p>
+                        <div class="stat" id="homeConnections">2</div>
+                    </div>
+                    <div class="card">
+                        <div class="big-icon">📚</div>
+                        <p>Active Courses</p>
+                        <div class="stat" id="homeCourses">3</div>
+                    </div>
+                    <div class="card">
+                        <div class="big-icon">🙋</div>
+                        <p>Doubt Sessions Attended</p>
+                        <div class="stat" id="homeDoubts">4</div>
+                    </div>
+                    <div class="card">
+                        <div class="big-icon">📋</div>
+                        <p>My Attendance</p>
+                        <div class="stat" id="homeAttendance">85%</div>
+                    </div>
+                </div>
+
+                <h2>Explore SkillSwap</h2>
+                <div class="grid">
+                    <div class="card">
+                        <div class="big-icon">💻</div>
+                        <h3>Learn a Skill</h3>
+                        <p>Find a student who can teach you something new.</p>
+                        <button class="btn" onclick="showPage('discover')">Explore</button>
+                    </div>
+                    <div class="card">
+                        <div class="big-icon">💡</div>
+                        <h3>Share Your Skills</h3>
+                        <p>Help other students by sharing your knowledge.</p>
+                        <button class="btn" onclick="showPage('profile')">My Profile</button>
+                    </div>
+                    <div class="card">
+                        <div class="big-icon">🎯</div>
+                        <h3>Track Your Goals</h3>
+                        <p>Review course deadlines and monitor attendance.</p>
+                        <button class="btn" onclick="showPage('courses')">View Courses</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DISCOVER -->
+            <section class="page" id="discover">
+                <h2>Find Your Skill Partner 🔎</h2>
+                <p class="subtitle">Search sample student profiles by skill.</p>
+
+                <div class="card">
+                    <label for="skillSearch">What skill do you want to learn?</label>
+                    <input id="skillSearch" placeholder="e.g. Python, HTML, Java">
+                    <button class="btn" onclick="searchSkills()">Find Partners</button>
+                    <button class="btn btn-light" onclick="renderStudents()">Show All</button>
+                </div>
+
+                <div class="grid" id="studentResults"></div>
+            </section>
+
+            <!-- PROFILE -->
+            <section class="page" id="profile">
+                <h2>Student Profile 👤</h2>
+                <p class="subtitle">Update your profile and learning goals.</p>
+
+                <div class="card">
+                    <form id="profileForm">
+                        <div>
+                            <label for="studentName">Your name</label>
+                            <input id="studentName" value="Alex Student" required>
+                        </div>
+                        <div>
+                            <label for="studentEmail">Email (demo only)</label>
+                            <input id="studentEmail" type="email" placeholder="student@example.com">
+                        </div>
+                        <div>
+                            <label for="knownSkills">Skills I can teach</label>
+                            <input id="knownSkills" value="HTML, Basic Java" required>
+                        </div>
+                        <div>
+                            <label for="wantedSkills">Skills I want to learn</label>
+                            <input id="wantedSkills" value="Python, CSS" required>
+                        </div>
+                        <div>
+                            <label for="level">My level</label>
+                            <select id="level">
+                                <option>Beginner</option>
+                                <option>Intermediate</option>
+                                <option>Advanced</option>
+                            </select>
+                        </div>
+                        <button class="btn" type="submit">Save Profile</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- CONNECTED -->
+            <section class="page" id="connected">
+                <h2>Connected People 🤝</h2>
+                <p class="subtitle">Your learning partners. Demo profiles are fictional.</p>
+                <div class="grid" id="connectionsList"></div>
+            </section>
+
+            <!-- COURSES -->
+            <section class="page" id="courses">
+                <h2>My Courses & Deadlines 📚</h2>
+                <p class="subtitle">Sample courses with a mixture of upcoming and completed deadlines.</p>
+
+                <div class="notice">These course dates are sample data. You can add your own dates below.</div>
+
+                <div class="grid" id="courseList"></div>
+
+                <div class="card">
+                    <h3>Add a course</h3>
+                    <form id="courseForm">
+                        <div>
+                            <label for="courseName">Course name</label>
+                            <input id="courseName" placeholder="e.g. HTML Basics" required>
+                        </div>
+                        <div>
+                            <label for="courseDate">Completion date</label>
+                            <input id="courseDate" type="date" required>
+                        </div>
+                        <button class="btn" type="submit">Add Course</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- DOUBT SESSIONS -->
+            <section class="page" id="doubts">
+                <h2>Doubt Sessions 🙋</h2>
+                <p class="subtitle">Keep track of your learning and doubt-clearing sessions.</p>
+
+                <div class="card">
+                    <p>Total doubt sessions attended</p>
+                    <div class="stat" id="doubtCount">4</div>
+                    <label for="doubtInput">Update attended sessions</label>
+                    <input type="number" id="doubtInput" min="0" value="4">
+                    <button class="btn" onclick="saveDoubts()">Save Count</button>
+                </div>
+            </section>
+
+            <!-- STUDENT ATTENDANCE -->
+            <section class="page" id="students">
+                <h2>Student Attendance 👩‍🎓</h2>
+                <p class="subtitle">A demo attendance register for students attending your sessions.</p>
+
+                <div class="card">
+                    <form id="studentForm">
+                        <div>
+                            <label for="attStudentName">Student name</label>
+                            <input id="attStudentName" placeholder="Enter student name" required>
+                        </div>
+                        <div>
+                            <label for="attStatus">Attendance status</label>
+                            <select id="attStatus">
+                                <option>Present</option>
+                                <option>Absent</option>
+                            </select>
+                        </div>
+                        <button class="btn" type="submit">Add Attendance Record</button>
+                    </form>
+                </div>
+
+                <div class="card" style="margin-top:20px">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MY ATTENDANCE -->
+            <section class="page" id="attendance">
+                <h2>My Attendance 📋</h2>
+                <p class="subtitle">Track your own class attendance.</p>
+
+                <div class="grid">
+                    <div class="card">
+                        <p>Classes attended</p>
+                        <div class="stat" id="attendedCount">17</div>
+                    </div>
+                    <div class="card">
+                        <p>Total classes</p>
+                        <div class="stat" id="totalCount">20</div>
+                    </div>
+                    <div class="card">
+                        <p>Attendance percentage</p>
+                        <div class="stat" id="attendancePercent">85%</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <form id="myAttendanceForm">
+                        <div>
+                            <label for="attendedInput">Classes attended</label>
+                            <input id="attendedInput" type="number" min="0" value="17" required>
+                        </div>
+                        <div>
+                            <label for="totalInput">Total classes held</label>
+                            <input id="totalInput" type="number" min="1" value="20" required>
+                        </div>
+                        <button class="btn" type="submit">Update Attendance</button>
+                    </form>
+                    <div class="progress">
+                        <div id="attendanceBar" style="width:85%"></div>
+                    </div>
+                    <p id="attendanceMessage" class="small">You are at 85% attendance.</p>
+                </div>
+            </section>
+
+            <!-- TEACHING SCHEDULE -->
+            <section class="page" id="teaching">
+                <h2>Teaching Time Management ⏰</h2>
+                <p class="subtitle">Plan your availability for teaching and doubt sessions.</p>
+
+                <div class="card">
+                    <form id="teachingForm">
+                        <div>
+                            <label for="teachingDay">Available day</label>
+                            <select id="teachingDay">
+                                <option>Monday</option>
+                                <option>Tuesday</option>
+                                <option>Wednesday</option>
+                                <option>Thursday</option>
+                                <option>Friday</option>
+                                <option>Saturday</option>
+                                <option>Sunday</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="startTime">Start time</label>
+                            <input type="time" id="startTime" value="16:00" required>
+                        </div>
+                        <div>
+                            <label for="endTime">End time</label>
+                            <input type="time" id="endTime" value="18:00" required>
+                        </div>
+                        <button class="btn" type="submit">Save Availability</button>
+                    </form>
+                </div>
+
+                <div class="card" style="margin-top:20px">
+                    <h3>Your saved schedule</h3>
+                    <p id="scheduleOutput">Monday, 16:00–18:00</p>
+                </div>
+            </section>
+
+            <!-- SETTINGS -->
+            <section class="page" id="settings">
+                <h2>Settings ⚙️</h2>
+                <p class="subtitle">Personalise your SkillSwap experience.</p>
+
+                <div class="card">
+                    <div class="setting-row">
+                        <div>
+                            <h3>🌙 Dark Mode</h3>
+                            <p>Switch between light and dark appearance.</p>
+                        </div>
+                        <input type="checkbox" id="darkMode" onchange="toggleDarkMode()">
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <h3>📷 Camera Access</h3>
+                            <p>Request camera permission from your browser when needed.</p>
+                        </div>
+                        <button class="btn" onclick="requestCamera()">Request Access</button>
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <h3>📂 My Data</h3>
+                            <p>View profile and locally saved settings.</p>
+                        </div>
+                        <button class="btn" onclick="viewMyData()">View Data</button>
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <h3>⏰ Teaching Schedule</h3>
+                            <p>Manage teaching availability.</p>
+                        </div>
+                        <button class="btn" onclick="showPage('teaching')">Manage</button>
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <h3>🔔 Notifications</h3>
+                            <p>Demo preference for reminders.</p>
+                        </div>
+                        <input type="checkbox" id="notifications">
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <h3>🚫 Blocked Users</h3>
+                            <p>Block or unblock sample student profiles.</p>
+                        </div>
+                        <button class="btn" onclick="showBlocked()">Manage</button>
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <h3>🙋 Doubt Sessions</h3>
+                            <p>Update the number you have attended.</p>
+                        </div>
+                        <button class="btn" onclick="showPage('doubts')">View</button>
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <h3>👩‍🎓 Student Attendance</h3>
+                            <p>Record attendance for your students.</p>
+                        </div>
+                        <button class="btn" onclick="showPage('students')">Manage</button>
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <h3>📋 My Attendance</h3>
+                            <p>Track your own attendance percentage.</p>
+                        </div>
+                        <button class="btn" onclick="showPage('attendance')">View</button>
+                    </div>
+
+                    <button class="btn" onclick="saveSettings()">Save Settings</button>
+                </div>
+
+                <div class="card" id="blockedPanel" style="display:none;margin-top:20px">
+                    <h3>Blocked Users</h3>
+                    <p class="subtitle">Manage demo student profiles.</p>
+                    <div id="blockedList"></div>
+                </div>
+            </section>
+
+            <!-- RATE US -->
+            <section class="page" id="rate">
+                <h2>Rate SkillSwap ⭐</h2>
+                <p class="subtitle">Your feedback helps us improve the learning experience.</p>
+
+                <div class="card">
+                    <div class="big-icon">💜</div>
+                    <h3>How is your experience?</h3>
+                    <p>Select a star rating below.</p>
+
+                    <div class="stars" id="starRating" aria-label="Rate from one to five stars">
+                        <button class="star" data-value="1" aria-label="1 star">★</button>
+                        <button class="star" data-value="2" aria-label="2 stars">★</button>
+                        <button class="star" data-value="3" aria-label="3 stars">★</button>
+                        <button class="star" data-value="4" aria-label="4 stars">★</button>
+                        <button class="star" data-value="5" aria-label="5 stars">★</button>
+                    </div>
+
+                    <p id="ratingText">Choose your rating.</p>
+
+                    <label for="feedback">Your feedback (optional)</label>
+                    <textarea id="feedback" rows="4" placeholder="Tell us what you think..."></textarea>
+
+                    <button class="btn" onclick="submitRating()">Submit Rating</button>
+                </div>
+            </section>
+
+            <footer>SkillSwap © 2026 · Learn. Share. Grow Together.</footer>
+
+        </main>
+    </div>
+
+    <script>
+        // Sample student data: fictional demo profiles.
+        const sampleStudents = [
+            { id: 1, name: "Aarav Sharma", emoji: "👨🏻‍💻", known: "Python, Java", wanted: "HTML, CSS", level: "Intermediate" },
+            { id: 2, name: "Meera Verma", emoji: "👩🏻‍🎨", known: "Graphic Design, Canva", wanted: "Java, Python", level: "Beginner" },
+            { id: 3, name: "Rohan Gupta", emoji: "🧑🏻‍💻", known: "HTML, CSS", wanted: "Python, Java", level: "Beginner" },
+            { id: 4, name: "Ananya Singh", emoji: "👩🏻‍💻", known: "Java, SQL", wanted: "HTML, Graphic Design", level: "Intermediate" },
+            { id: 5, name: "Kabir Mehta", emoji: "👨🏻‍🎨", known: "Video Editing, Canva", wanted: "HTML, Java", level: "Beginner" },
+            { id: 6, name: "Isha Patel", emoji: "👩🏻‍📚", known: "Python, HTML", wanted: "Java, SQL", level: "Intermediate" }
+        ];
+
+        let connections = JSON.parse(localStorage.getItem("ssConnections") || "[1,3]");
+        let blocked = JSON.parse(localStorage.getItem("ssBlocked") || "[]");
+        let rating = Number(localStorage.getItem("ssRating") || 0);
+
+        let courses = JSON.parse(localStorage.getItem("ssCourses") || "null") || [
+            { name: "HTML Basics", date: futureDate(3) },
+            { name: "Java Fundamentals", date: futureDate(12) },
+            { name: "Python Introduction", date: pastDate(2) }
+        ];
+
+        let attendanceRecords = JSON.parse(localStorage.getItem("ssStudentAttendance") || "null") || [
+            { name: "Riya", status: "Present" },
+            { name: "Arjun", status: "Present" },
+            { name: "Simran", status: "Absent" }
+        ];
+
+        function futureDate(days) {
+            const d = new Date();
+            d.setDate(d.getDate() + days);
+            return dateString(d);
+        }
+
+        function pastDate(days) {
+            const d = new Date();
+            d.setDate(d.getDate() - days);
+            return dateString(d);
+        }
+
+        function dateString(d) {
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, "0");
+            const day = String(d.getDate()).padStart(2, "0");
+            return `${y}-${m}-${day}`;
+        }
+
+        function showPage(id) {
+            document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+            document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+
+            const page = document.getElementById(id);
+            if (page) page.classList.add("active");
+
+            const nav = document.querySelector(`.nav-btn[data-page="${id}"]`);
+            if (nav) nav.classList.add("active");
+
+            document.getElementById("sidebar").classList.add("closed");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        document.querySelectorAll(".nav-btn").forEach(button => {
+            button.addEventListener("click", () => showPage(button.dataset.page));
+        });
+
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("closed");
+        }
+
+        function renderStudents(filter = "") {
+            const results = document.getElementById("studentResults");
+            const term = filter.toLowerCase().trim();
+
+            const matches = sampleStudents.filter(s =>
+                !blocked.includes(s.id) &&
+                (s.name.toLowerCase().includes(term) ||
+                    s.known.toLowerCase().includes(term) ||
+                    s.wanted.toLowerCase().includes(term))
+            );
+
+            results.innerHTML = matches.length ? matches.map(s => `
+        <div class="card">
+            <div class="profile">
+                <div class="avatar">${s.emoji}</div>
+                <div><h3>${s.name}</h3><p>${s.level}</p></div>
+            </div>
+            <p><b>Can teach:</b> ${s.known}</p>
+            <p><b>Wants to learn:</b> ${s.wanted}</p>
+            <div>
+                ${s.known.split(",").map(x => `<span class="tag">${x.trim()}</span>`).join("")}
+            </div>
+            <button class="btn full-btn" onclick="connectStudent(${s.id})">
+                ${connections.includes(s.id) ? "Connected ✓" : "Connect"}
+            </button>
+            <button class="btn btn-light full-btn" onclick="blockStudent(${s.id})">Block User</button>
+        </div>
+    `).join("") : `<div class="card empty">No matching students found.</div>`;
+        }
+
+        function searchSkills() {
+            renderStudents(document.getElementById("skillSearch").value);
+        }
+
+        function connectStudent(id) {
+            if (!connections.includes(id)) {
+                connections.push(id);
+                localStorage.setItem("ssConnections", JSON.stringify(connections));
+                alert("Connection added in this demo!");
+            } else {
+                alert("You are already connected with this student.");
+            }
+            renderStudents(document.getElementById("skillSearch").value);
+            renderConnections();
+            updateDashboard();
+        }
+
+        function blockStudent(id) {
+            if (!blocked.includes(id)) blocked.push(id);
+            connections = connections.filter(x => x !== id);
+
+            localStorage.setItem("ssBlocked", JSON.stringify(blocked));
+            localStorage.setItem("ssConnections", JSON.stringify(connections));
+
+            renderStudents(document.getElementById("skillSearch").value);
+            renderConnections();
+            renderBlocked();
+            updateDashboard();
+            alert("User blocked in this browser demo.");
+        }
+
+        function renderConnections() {
+            const list = document.getElementById("connectionsList");
+            const people = sampleStudents.filter(s => connections.includes(s.id) && !blocked.includes(s.id));
+
+            list.innerHTML = people.length ? people.map(s => `
+        <div class="card">
+            <div class="profile">
+                <div class="avatar">${s.emoji}</div>
+                <div><h3>${s.name}</h3><p>${s.level}</p></div>
+            </div>
+            <p>Skills: ${s.known}</p>
+            <span class="tag">Connected</span>
+            <button class="btn btn-light full-btn" onclick="disconnectStudent(${s.id})">Remove Connection</button>
+        </div>
+    `).join("") : `<div class="card empty">No connections yet. Find a learning partner!</div>`;
+        }
+
+        function disconnectStudent(id) {
+            connections = connections.filter(x => x !== id);
+            localStorage.setItem("ssConnections", JSON.stringify(connections));
+            renderConnections();
+            renderStudents();
+            updateDashboard();
+        }
+
+        function renderBlocked() {
+            const list = document.getElementById("blockedList");
+            const people = sampleStudents.filter(s => blocked.includes(s.id));
+
+            list.innerHTML = people.length ? people.map(s => `
+        <div class="setting-row">
+            <div><h3>${s.name}</h3><p>${s.known}</p></div>
+            <button class="btn" onclick="unblockStudent(${s.id})">Unblock</button>
+        </div>
+    `).join("") : `<p class="empty">No blocked users.</p>`;
+        }
+
+        function showBlocked() {
+            const panel = document.getElementById("blockedPanel");
+            panel.style.display = panel.style.display === "none" ? "block" : "none";
+            renderBlocked();
+        }
+
+        function unblockStudent(id) {
+            blocked = blocked.filter(x => x !== id);
+            localStorage.setItem("ssBlocked", JSON.stringify(blocked));
+            renderBlocked();
+            renderStudents();
+        }
+
+        function renderCourses() {
+            const list = document.getElementById("courseList");
+            list.innerHTML = courses.map((c, i) => {
+                const days = Math.ceil((new Date(c.date + "T00:00:00") - new Date(new Date().toDateString())) / 86400000);
+                let status, color;
+
+                if (days < 0) {
+                    status = `Deadline passed ${Math.abs(days)} day(s) ago`;
+                    color = "#d94b65";
+                } else if (days === 0) {
+                    status = "Deadline is today!";
+                    color = "#d98b20";
+                } else {
+                    status = `${days} day(s) left`;
+                    color = "#29966b";
+                }
+
+                return `
+            <div class="card">
+                <div class="big-icon">📚</div>
+                <h3>${c.name}</h3>
+                <p>Completion date: ${c.date}</p>
+                <p style="color:${color};font-weight:bold;margin-top:10px">${status}</p>
+                <button class="btn btn-danger" onclick="deleteCourse(${i})">Remove</button>
+            </div>
+        `;
+            }).join("") || `<div class="card empty">No courses added.</div>`;
+
+            document.getElementById("homeCourses").textContent = courses.length;
+        }
+
+        function deleteCourse(i) {
+            courses.splice(i, 1);
+            localStorage.setItem("ssCourses", JSON.stringify(courses));
+            renderCourses();
+        }
+
+        document.getElementById("courseForm").addEventListener("submit", e => {
+            e.preventDefault();
+            courses.push({
+                name: document.getElementById("courseName").value.trim(),
+                date: document.getElementById("courseDate").value
+            });
+            localStorage.setItem("ssCourses", JSON.stringify(courses));
+            e.target.reset();
+            renderCourses();
+            alert("Course added!");
+        });
+
+        function saveDoubts() {
+            const value = Number(document.getElementById("doubtInput").value);
+            if (!Number.isInteger(value) || value < 0) return alert("Enter a valid non-negative number.");
+
+            localStorage.setItem("ssDoubts", value);
+            updateDashboard();
+            alert("Doubt sessions updated.");
+        }
+
+        function renderAttendance() {
+            const tbody = document.getElementById("attendanceTable");
+
+            tbody.innerHTML = attendanceRecords.map((r, i) => `
+        <tr>
+            <td>${escapeHTML(r.name)}</td>
+            <td>
+                <select onchange="changeAttendance(${i},this.value)">
+                    <option ${r.status === "Present" ? "selected" : ""}>Present</option>
+                    <option ${r.status === "Absent" ? "selected" : ""}>Absent</option>
+                </select>
+            </td>
+            <td><button class="btn btn-danger" onclick="deleteAttendance(${i})">Delete</button></td>
+        </tr>
+    `).join("") || `<tr><td colspan="3">No records yet.</td></tr>`;
+        }
+
+        function changeAttendance(i, status) {
+            attendanceRecords[i].status = status;
+            localStorage.setItem("ssStudentAttendance", JSON.stringify(attendanceRecords));
+        }
+
+        function deleteAttendance(i) {
+            attendanceRecords.splice(i, 1);
+            localStorage.setItem("ssStudentAttendance", JSON.stringify(attendanceRecords));
+            renderAttendance();
+        }
+
+        document.getElementById("studentForm").addEventListener("submit", e => {
+            e.preventDefault();
+            attendanceRecords.push({
+                name: document.getElementById("attStudentName").value.trim(),
+                status: document.getElementById("attStatus").value
+            });
+            localStorage.setItem("ssStudentAttendance", JSON.stringify(attendanceRecords));
+            e.target.reset();
+            renderAttendance();
+        });
+
+        function updateMyAttendance(attended, total) {
+            if (!Number.isInteger(attended) || !Number.isInteger(total) ||
+                total < 1 || attended < 0 || attended > total) {
+                alert("Enter valid values. Attended classes cannot exceed total classes.");
+                return false;
+            }
+
+            const percent = Math.round(attended / total * 100);
+            document.getElementById("attendedCount").textContent = attended;
+            document.getElementById("totalCount").textContent = total;
+            document.getElementById("attendancePercent").textContent = percent + "%";
+            document.getElementById("attendanceBar").style.width = percent + "%";
+            document.getElementById("attendanceMessage").textContent =
+                percent >= 75 ? `You have ${percent}% attendance.` :
+                    `Your attendance is ${percent}%. You may need to attend more classes.`;
+
+            localStorage.setItem("ssMyAttendance", JSON.stringify({ attended, total }));
+            document.getElementById("homeAttendance").textContent = percent + "%";
+            return true;
+        }
+
+        document.getElementById("myAttendanceForm").addEventListener("submit", e => {
+            e.preventDefault();
+            updateMyAttendance(
+                Number(document.getElementById("attendedInput").value),
+                Number(document.getElementById("totalInput").value)
+            );
+        });
+
+        document.getElementById("teachingForm").addEventListener("submit", e => {
+            e.preventDefault();
+            const day = document.getElementById("teachingDay").value;
+            const start = document.getElementById("startTime").value;
+            const end = document.getElementById("endTime").value;
+
+            if (start >= end) return alert("End time must be later than start time.");
+
+            const schedule = { day, start, end };
+            localStorage.setItem("ssSchedule", JSON.stringify(schedule));
+            renderSchedule();
+            alert("Teaching schedule saved!");
+        });
+
+        function renderSchedule() {
+            const s = JSON.parse(localStorage.getItem("ssSchedule") || "null");
+            if (!s) return;
+
+            document.getElementById("teachingDay").value = s.day;
+            document.getElementById("startTime").value = s.start;
+            document.getElementById("endTime").value = s.end;
+            document.getElementById("scheduleOutput").textContent = `${s.day}, ${s.start}–${s.end}`;
+        }
+
+        function toggleDarkMode() {
+            const enabled = document.getElementById("darkMode").checked;
+            document.body.classList.toggle("dark", enabled);
+            localStorage.setItem("ssDarkMode", enabled ? "true" : "false");
+        }
+
+        function saveSettings() {
+            const enabled = document.getElementById("notifications").checked;
+            localStorage.setItem("ssNotifications", enabled ? "true" : "false");
+            toggleDarkMode();
+            alert("Settings saved on this browser.");
+        }
+
+        async function requestCamera() {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                alert("Camera access is unavailable here. Try a secure browser context such as localhost or HTTPS.");
+                return;
+            }
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                stream.getTracks().forEach(track => track.stop());
+                alert("Camera permission granted. The camera has been stopped.");
+            } catch (err) {
+                alert("Camera permission was denied or the camera is unavailable. Check your browser's site permissions.");
+            }
+        }
+
+        function viewMyData() {
+            const name = document.getElementById("studentName").value;
+            const known = document.getElementById("knownSkills").value;
+            const wanted = document.getElementById("wantedSkills").value;
+
+            alert(
+                "Demo profile data\n\nName: " + name +
+                "\nSkills I can teach: " + known +
+                "\nSkills I want to learn: " + wanted +
+                "\nConnected people: " + connections.length
+            );
+        }
+
+        function escapeHTML(value) {
+            return String(value).replace(/[&<>"']/g, c => ({
+                "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+            })[c]);
+        }
+
+        document.getElementById("profileForm").addEventListener("submit", e => {
+            e.preventDefault();
+
+            const profile = {
+                name: document.getElementById("studentName").value.trim(),
+                email: document.getElementById("studentEmail").value.trim(),
+                known: document.getElementById("knownSkills").value.trim(),
+                wanted: document.getElementById("wantedSkills").value.trim(),
+                level: document.getElementById("level").value
+            };
+
+            localStorage.setItem("ssProfile", JSON.stringify(profile));
+            alert("Profile saved!");
+        });
+
+        function loadProfile() {
+            const p = JSON.parse(localStorage.getItem("ssProfile") || "null");
+            if (!p) return;
+
+            document.getElementById("studentName").value = p.name;
+            document.getElementById("studentEmail").value = p.email;
+            document.getElementById("knownSkills").value = p.known;
+            document.getElementById("wantedSkills").value = p.wanted;
+            document.getElementById("level").value = p.level;
+        }
+
+        document.querySelectorAll(".star").forEach(button => {
+            button.addEventListener("click", () => {
+                rating = Number(button.dataset.value);
+                document.querySelectorAll(".star").forEach(star => {
+                    star.classList.toggle("selected", Number(star.dataset.value) <= rating);
+                });
+                document.getElementById("ratingText").textContent = `${rating} out of 5 stars`;
+            });
+        });
+
+
+        function submitRating() {
+            if (!rating) return alert("Please select a star rating first.");
+
+            localStorage.setItem("ssRating", rating);
+            localStorage.setItem("ssFeedback", document.getElementById("feedback").value);
+            alert("Thank you for rating SkillSwap " + rating + "/5!");
+        }
+
+        function updateDashboard() {
+            document.getElementById("homeConnections").textContent =
+                sampleStudents.filter(s => connections.includes(s.id) && !blocked.includes(s.id)).length;
+
+            document.getElementById("homeDoubts").textContent =
+                localStorage.getItem("ssDoubts") || "4";
+
+            const a = JSON.parse(localStorage.getItem("ssMyAttendance") || '{"attended":17,"total":20}');
+            document.getElementById("doubtCount").textContent = localStorage.getItem("ssDoubts") || "4";
+            document.getElementById("doubtInput").value = localStorage.getItem("ssDoubts") || "4";
+
+            document.getElementById("attendedInput").value = a.attended;
+            document.getElementById("totalInput").value = a.total;
+            updateMyAttendance(a.attended, a.total);
+        }
+
+        function loadSettings() {
+            const dark = localStorage.getItem("ssDarkMode") === "true";
+            document.getElementById("darkMode").checked = dark;
+            document.body.classList.toggle("dark", dark);
+
+            document.getElementById("notifications").checked =
+                localStorage.getItem("ssNotifications") !== "false";
+
+            if (rating) {
+                document.querySelectorAll(".star").forEach(star => {
+                    star.classList.toggle("selected", Number(star.dataset.value) <= rating);
+                });
+                document.getElementById("ratingText").textContent = `${rating} out of 5 stars`;
+                document.getElementById("feedback").value = localStorage.getItem("ssFeedback") || "";
+            }
+        }
+
+        // Initialise demo application
+        loadProfile();
+        loadSettings();
+        renderStudents();
+        renderConnections();
+        renderCourses();
+        renderAttendance();
+        renderBlocked();
+        renderSchedule();
+        updateDashboard();
+        function toggleDarkMode() {
+            const enabled = document.getElementById("darkMode").checked;
+            document.body.classList.toggle("dark", enabled);
+            localStorage.setItem("ssDarkMode", enabled ? "true" : "false");
+        }
+    </script>
+    </script>
+
+</body>
+
+</html>
+```
